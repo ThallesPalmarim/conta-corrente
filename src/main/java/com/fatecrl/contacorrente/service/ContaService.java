@@ -3,11 +3,13 @@ package com.fatecrl.contacorrente.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fatecrl.contacorrente.model.Conta;
+import org.springframework.stereotype.Service;
 
+import com.fatecrl.contacorrente.model.Conta;
+@Service
 public class ContaService {
     private static List<Conta> contas = new ArrayList<Conta>();
-
+    
     public ContaService(){
         contaFake();
     }
@@ -27,14 +29,14 @@ public class ContaService {
     }
 
     public Conta find(Conta conta){
-        return contas.stream().filter(c -> c.equals(conta)).findFirst().get();
+        return contas.stream().filter(c -> c.equals(conta)).findFirst().orElse(null);
     }
 
     public Conta find(Long id){
         return find(new Conta(id));
     }
 
-    public void Create (Conta conta){
+    public void create (Conta conta){
         Long newId = (long) (contas.size() +1);
         conta.setId(newId);
         contas.add(conta);
@@ -60,6 +62,7 @@ public class ContaService {
                 _conta.setSaldo(conta.getSaldo());
             if(!conta.getTitular().isBlank())
                 _conta.setTitular(conta.getTitular());
+                return true;
         }
         return false;
     }
